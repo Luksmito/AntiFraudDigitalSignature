@@ -28,7 +28,7 @@ Signature signMessage(String message, PrivateKey key) {
   Gera o Hash da mensagem padrão
 */
 List<int> generateStandardHash() {
-  return sha256.convert(utf8.encode("Standard")).bytes;
+  return sha256.convert(utf8.encode("Mensagem padrao")).bytes;
 }
 
 /*

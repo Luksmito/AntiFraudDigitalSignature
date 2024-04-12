@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:todo_list/data/styles.dart';
+
 
 class LabeledTextField extends StatelessWidget {
 
@@ -15,7 +14,9 @@ class LabeledTextField extends StatelessWidget {
   final bool readOnly;
   final TextEditingController? controller;
   final bool obscureText;
-
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
+  final void Function()? onEditingComplete;
   const LabeledTextField({
     super.key,
     this.textStyle = const TextStyle(),
@@ -28,9 +29,11 @@ class LabeledTextField extends StatelessWidget {
     this.labelStyle = const TextStyle(),
     this.readOnly = false,
     this.controller,
-    this.obscureText = false
+    this.obscureText = false,
+    this.onChanged,
+    this.onTap,
+    this.onEditingComplete
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +41,21 @@ class LabeledTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (labelText != "")
-          Text(labelText, style:  textStyle,),
+          Text(labelText, style:  labelStyle,),
         if (labelText != "")
           const SizedBox(height: 7,),
         SizedBox(
           height: height,
           child: TextField(
+                onEditingComplete: onEditingComplete,
                 obscureText: obscureText,
                 controller: controller,
                 readOnly: readOnly,
                 maxLines: maxLines,
                 style: textStyle,
+                onChanged: onChanged,
                 autocorrect: autoCorrect,
+                onTap: onTap,
                 decoration: InputDecoration(
                 labelText: innerText,
                 labelStyle: textStyle,

@@ -1,11 +1,12 @@
+import 'package:crypto_id/screens/tutorials/tutorial_page.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_list/components/screen_title.dart';
-import 'package:todo_list/data/styles.dart';
-import 'package:todo_list/screens/generate_keys.dart';
-import 'package:todo_list/screens/settings.dart';
-import 'package:todo_list/screens/sign_message.dart';
-import 'package:todo_list/screens/signatures_list.dart';
-import 'package:todo_list/screens/add_signature.dart';
+import 'package:crypto_id/components/screen_title.dart';
+import 'package:crypto_id/data/styles.dart';
+import 'package:crypto_id/screens/generate_keys.dart';
+import 'package:crypto_id/screens/settings/settings.dart';
+import 'package:crypto_id/screens/sign_message/sign_message.dart';
+import 'package:crypto_id/screens/signatures_list.dart';
+import 'package:crypto_id/screens/add_signature.dart';
 
 int returnIcon(int actualIndex, int myIndex) {
   if (actualIndex == myIndex) {
@@ -50,6 +51,7 @@ class Bar extends StatelessWidget {
 class _Home extends State<Home> {
   
   int _selectedIndex = 0;
+  bool showTutorial = true;
 
   void changePage(int newIndex){
     setState(() {
@@ -72,20 +74,18 @@ class _Home extends State<Home> {
       _selectedIndex = index;
     });
   }
-
-  static const List<String> titles = [
-    "Assinaturas",
-    "Adicionar Assinaturas",
-    "Gerar chaves",
-    "Assinar Mensagem",
-    "Configurações"
-  ];
-
- 
+  
+  Widget showTutorialOrPages(List<Widget> widgetOptions) {
+    if (showTutorial) {
+      showTutorial = false;
+      return const TutorialPage();
+    } else {
+      return widgetOptions[_selectedIndex];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var title = titles[_selectedIndex];
     final List<Widget> widgetOptions = <Widget>[
       SignaturesList(changePageCallback: changePage,),
       const AddSignature(),
@@ -96,7 +96,9 @@ class _Home extends State<Home> {
   
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SafeArea(child: widgetOptions.elementAt(_selectedIndex)),
+      body: SafeArea(
+      child: showTutorialOrPages(widgetOptions)
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

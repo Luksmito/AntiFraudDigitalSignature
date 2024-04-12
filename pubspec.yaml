@@ -1,4 +1,4 @@
-name: todo_list
+name: crypto_id
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -13,15 +13,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-  sqflite_common_ffi:
   provider: ^6.0.0
   ecdsa: ^0.1.0
   cupertino_icons: ^1.0.6
   crypto: ^3.0.3
   elliptic: ^0.3.10
-  sqflite: ^2.0.0
+  sqflite: ^2.3.2
   path_provider: ^2.0.2
-
+  path:
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -35,6 +35,7 @@ flutter:
 
   assets:
     - lib/assets/fonts/
+    - lib/assets/images/
 
   fonts:
     - family: Urbanist

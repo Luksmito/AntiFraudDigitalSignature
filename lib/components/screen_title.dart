@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/data/styles.dart';
-
 
 class ScreenTitle extends StatelessWidget {
- 
   final String title;
 
   const ScreenTitle(

@@ -1,11 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-
-const String tableOtherKeys = 'OtherKeys';
-const String columnId = '_id';
-const String columnName = 'name';
-const String columnPublicKey = 'publicKey';
+import 'db_meta_data.dart';
 
 class OtherKeys {
   int id = -1;
@@ -14,21 +9,20 @@ class OtherKeys {
 
   Map<String, Object?> toMap() {
     var map = <String, Object?>{
-      columnName: name,
+      columnOtherName: name,
       columnPublicKey: publicKey
     };
-    if (id != null) {
-      map[columnId] = id;
-    }
+    map[columnId] = id;
+  
     return map;
   }
 
   OtherKeys();
 
   OtherKeys.fromMap(Map<String, Object?> map) {
-    id = map[columnId] != null ? map[columnId] as int : -1;
-    name = map[columnName] as String;
-    publicKey = map[columnPublicKey] as String;
+    id = map["id"] != null ? map["id"] as int : -1;
+    name = map[columnOtherName] != null ? map[columnOtherName]  as String : "";
+    publicKey = map[columnPublicKey]!= null ? map[columnPublicKey]  as String : "";
   }
 }
 
@@ -49,14 +43,10 @@ class OtherKeysHelper {
 
   Future<Database> initDb() async {
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'keys.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    String path = join(databasesPath, nomeBanco);
+    return await openDatabase(path, version: version);
   }
 
-  void _onCreate(Database db, int newVersion) async {
-    await db.execute(
-        "CREATE TABLE $tableOtherKeys(id INTEGER PRIMARY KEY, $columnName TEXT UNIQUE, $columnPublicKey TEXT)");
-  }
 
   Future<int> insertItem(Map<String, dynamic> item) async {
     Database? dbClient = await db;

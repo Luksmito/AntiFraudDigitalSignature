@@ -1,0 +1,4 @@
+xImplementar a exclusão e verificação de mensagem do sign_list_item.
+-Refatorar.
+-Implementar a exclusão de chaves próprias na página de configurações.
+-Refatorar todas as páginas mas principalmente signatures_list.

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'package:todo_list/components/labeled_text_field.dart';
-import 'package:todo_list/components/screen_title.dart';
-import 'package:todo_list/data/styles.dart';
-import 'package:todo_list/controllers/keys.dart';
-import 'package:todo_list/controllers/my_keys_controller.dart';
-import 'package:todo_list/data/utils.dart';
+import 'package:crypto_id/components/labeled_text_field.dart';
+import 'package:crypto_id/components/screen_title.dart';
+import 'package:crypto_id/controllers/keys.dart';
+import 'package:crypto_id/controllers/my_keys_controller.dart';
+import 'package:crypto_id/data/utils.dart';
+import 'package:crypto_id/controllers/db_controller.dart';
 
 class GenerateKeys extends StatefulWidget {
   const GenerateKeys({super.key});
@@ -18,42 +17,57 @@ class _GenerateKeys extends State<GenerateKeys> {
   final TextEditingController _privateKeyController = TextEditingController();
   final TextEditingController _publicKeyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final dbHelper = MyKeysHelper();
-
-  
 
   void saveKeys() async {
     if (_privateKeyController.text == "" ||
         _publicKeyController.text == "" ||
         _nameController.text == "") {
-        exibirDialogoDeAviso(context, const Text("Erro!"),
-          const Text("Gere as chaves e escolha um nome para guarda-las"), const Text("ok"));
+      exibirDialogoDeAviso(
+          context,
+          Text("Erro!", style: Theme.of(context).textTheme.displayLarge),
+          Text("Gere as chaves e escolha um nome para guarda-las",
+              style: Theme.of(context).textTheme.displayMedium),
+          Text("ok", style: Theme.of(context).textTheme.displayMedium));
       return;
     }
     if (_nameController.text == "-Chaves-") {
-      exibirDialogoDeAviso(context, const Text("Erro!"),
-          const Text("Nome inválido"), const Text("ok"));
+      exibirDialogoDeAviso(
+          context,
+          Text("Erro!", style: Theme.of(context).textTheme.displayLarge),
+          Text("Nome inválido",
+              style: Theme.of(context).textTheme.displayMedium),
+          Text("ok", style: Theme.of(context).textTheme.displayMedium));
       return;
     }
     var item = {
-      "name": _nameController.text,
-      "privateKey": _privateKeyController.text,
-      "publicKey": _publicKeyController.text
+      'name_my_key': _nameController.text,
+      'privateKey': _privateKeyController.text,
+      'publicKey': _publicKeyController.text
     };
-    var result = await dbHelper.insertItem(item);
-    if (result != 0) {
-      exibirDialogoDeAviso(context, const Text("Sucesso!"),
-      const Text("Chaves guardadas com sucesso!"), const Text("ok"));
-    } else {
-      exibirDialogoDeAviso(context, const Text("Erro na criação!"),
-      const Text("Nome já existe no banco!"), const Text("ok"));
+    var dbHelper = MyKeysHelper();
+    try {
+      await dbHelper.insertItem(item);
+      exibirDialogoDeAviso(
+          context,
+          Text("Sucesso!", style: Theme.of(context).textTheme.displayLarge),
+          Text("Chaves guardadas com sucesso!",
+              style: Theme.of(context).textTheme.displayMedium),
+          Text("ok", style: Theme.of(context).textTheme.displayMedium));
+    } catch (e) {
+      print(e);
+      exibirDialogoDeAviso(
+          context,
+          Text("Erro na criação!",
+              style: Theme.of(context).textTheme.displayLarge),
+          Text("Nome já existe no banco!",
+              style: Theme.of(context).textTheme.displayMedium),
+          Text("ok", style: Theme.of(context).textTheme.displayMedium));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      
       padding: const EdgeInsets.fromLTRB(36, 20, 36, 0),
       child: Column(
         children: [
@@ -64,10 +78,10 @@ class _GenerateKeys extends State<GenerateKeys> {
               Text(
                 "Chave privada",
                 style: Theme.of(context).textTheme.displayMedium,
-    
               ),
               IconButton(
-                  constraints: const BoxConstraints.tightFor(width: 30, height: 40),
+                  constraints:
+                      const BoxConstraints.tightFor(width: 15, height: 15),
                   color: Theme.of(context).colorScheme.primary,
                   onPressed: () {
                     copyText(_privateKeyController.text, context);
@@ -93,13 +107,13 @@ class _GenerateKeys extends State<GenerateKeys> {
               ),
               const Spacer(),
               IconButton(
-                  constraints: const BoxConstraints.tightFor(width: 30, height: 40),
+                  constraints:
+                      const BoxConstraints.tightFor(width: 15, height: 15),
                   color: Theme.of(context).colorScheme.primary,
                   onPressed: () {
                     copyText(_publicKeyController.text, context);
                   },
-                  icon: const Icon(Icons.copy, size: 20)
-              )
+                  icon: const Icon(Icons.copy, size: 20))
             ],
           ),
           LabeledTextField(
@@ -118,6 +132,7 @@ class _GenerateKeys extends State<GenerateKeys> {
             controller: _nameController,
             textStyle: Theme.of(context).textTheme.displayMedium,
             labelText: "Identificador das chaves",
+            labelStyle: Theme.of(context).textTheme.displayMedium,
             maxLines: 1,
             contentPadding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
           ),
@@ -129,7 +144,6 @@ class _GenerateKeys extends State<GenerateKeys> {
             children: [
               ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style,
-                  
                   onPressed: () {
                     var key = generateKeys();
                     setState(() {
@@ -144,8 +158,10 @@ class _GenerateKeys extends State<GenerateKeys> {
               ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style,
                   onPressed: () async {
+                    await DataBaseController().getTables();
                     saveKeys();
                     //await deleteDatabaseFile();
+                    //print(await DataBaseController().getTables());
                   },
                   child: Text(
                     "Guardar chaves",
@@ -158,5 +174,3 @@ class _GenerateKeys extends State<GenerateKeys> {
     );
   }
 }
-
-

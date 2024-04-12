@@ -1,12 +1,12 @@
-import 'package:todo_list/data/styles.dart';
+import 'package:crypto_id/data/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_list/controllers/db_controller.dart';
-import 'package:todo_list/data/styles.dart';
+import 'package:crypto_id/controllers/db_controller.dart';
 import './screens/home.dart';
-import 'package:todo_list/controllers/db_controller.dart';
 
-void setup() {
- DataBaseController().initDb();
+void setup() async {
+  DataBaseController().initDb();
+
+  await DataBaseController().getTables();
 }
 
 void main() {
@@ -37,6 +37,7 @@ class _MyAppState extends State<MyApp> {
     
   }
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: themeLight(context),  

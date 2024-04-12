@@ -1,39 +1,40 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-
-const String tableMyKeys = 'MyKeys';
-const String columnId = '_id';
-const String columnName = 'name';
-const String columnPrivateKey = 'privateKey';
-const String columnPublicKey = 'publicKey';
+import 'db_meta_data.dart';
 
 class MyKey {
-  int id = -1;
-  String name = '';
-  String privateKey = '';
-  String publicKey = '';
+  final int id;
+  final String name;
+  final String privateKey;
+  final String publicKey;
+
+  const MyKey({
+    this.id = -1,
+    this.name = '',
+    this.privateKey = '',
+    this.publicKey = '',
+  });
 
   Map<String, Object?> toMap() {
-    var map = <String, Object?>{
+    return {
       columnName: name,
       columnPrivateKey: privateKey,
-      columnPublicKey: publicKey
+      columnPublicKey: publicKey,
+      columnId: id
     };
-    if (id != null) {
-      map[columnId] = id;
-    }
-    return map;
   }
 
-  MyKey();
-
-  MyKey.fromMap(Map<String, Object?> map) {
-    id = map[columnId] != null ? map[columnId] as int : -1;
-    name = map[columnName] as String;
-    privateKey = map[columnPrivateKey] as String;
-    publicKey = map[columnPublicKey] as String;
+  MyKey fromMap(Map<String, Object?> map) {
+    
+    return MyKey(
+      id:  map["id"] != null ? map["id"] as int : -1,
+      name: map[columnName] != null ? map[columnName]  as String : "",
+      privateKey: map[columnPrivateKey]!= null ? map[columnPrivateKey]  as String : "",
+      publicKey: map[columnPublicKey]!= null ? map[columnPublicKey]  as String : ""
+    );
+  
   }
+     
 }
 
 class MyKeysHelper {
@@ -53,8 +54,8 @@ class MyKeysHelper {
 
   Future<Database> initDb() async {
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'keys.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    String path = join(databasesPath, nomeBanco);
+    return await openDatabase(path, version: version);
   }
 
   void _onCreate(Database db, int newVersion) async {
@@ -66,6 +67,7 @@ class MyKeysHelper {
     Database? dbClient = await db;
     return await dbClient?.insert(tableMyKeys, item) ?? -1; // Retorna -1 se dbClient for nulo
   }
+
   Future<List<Map<String, dynamic>>> getAllItems() async {
     Database? dbClient = await db;
     return await dbClient?.query(tableMyKeys) ?? [];
@@ -73,25 +75,27 @@ class MyKeysHelper {
 
   Future<int> updateItem(Map<String, dynamic> item) async {
     Database? dbClient = await db;
-    return await dbClient?.update(tableMyKeys, item, where: "id = ?", whereArgs: [item["id"]]) ?? -1;
+    return await dbClient?.update(tableMyKeys, item,
+            where: "id = ?", whereArgs: [item["id"]]) ??
+        -1;
   }
 
   Future<int> deleteItem(int id) async {
     Database? dbClient = await db;
-    return await dbClient?.delete(tableMyKeys, where: "id = ?", whereArgs: [id]) ?? -1;
+    return await dbClient
+            ?.delete(tableMyKeys, where: "id = ?", whereArgs: [id]) ??
+        -1;
   }
-
 }
-
 
 Future<void> deleteDatabaseFile() async {
   // Obtenha o diretório onde o banco de dados está armazenado
   var databasesPath = await getDatabasesPath();
-  String path = join(databasesPath, 'keys.db');
-  
+  String path = join(databasesPath, nomeBanco);
+
   // Verifique se o arquivo do banco de dados existe
   bool exists = await databaseExists(path);
-  
+
   if (exists) {
     // Se o arquivo existir, exclua-o
     await deleteDatabase(path);

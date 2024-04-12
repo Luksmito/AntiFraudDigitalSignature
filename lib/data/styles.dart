@@ -18,6 +18,7 @@ ThemeData themeLight(BuildContext context) {
           background: Colors.white,
           seedColor: const Color.fromARGB(255, 0x0c, 0x0c, 0x0c),
           primary: const Color.fromARGB(255, 0x0c, 0x0c, 0x0c),
+          onPrimary: const Color.fromARGB(255, 0x0c, 0x0c, 0x0c),
           onBackground: const Color.fromARGB(255, 0x0c, 0x0c, 0x0c),
           onSecondary: Colors.white,
           tertiary: Colors.grey),
