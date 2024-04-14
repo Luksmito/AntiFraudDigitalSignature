@@ -1,3 +1,7 @@
+import 'package:crypto_id/main.dart';
+import 'package:crypto_id/screens/tutorials/TutorialFlow.dart';
+import 'package:crypto_id/screens/tutorials/TutorialStep.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/components/labeled_text_field.dart';
 import 'package:crypto_id/components/screen_title.dart';
@@ -5,9 +9,11 @@ import 'package:crypto_id/controllers/keys.dart';
 import 'package:crypto_id/controllers/my_keys_controller.dart';
 import 'package:crypto_id/data/utils.dart';
 import 'package:crypto_id/controllers/db_controller.dart';
+import 'package:flutter/widgets.dart';
 
 class GenerateKeys extends StatefulWidget {
-  const GenerateKeys({super.key});
+  final Function(int) changePageCallback;
+  const GenerateKeys({super.key, required this.changePageCallback});
 
   @override
   State<GenerateKeys> createState() => _GenerateKeys();
@@ -17,6 +23,8 @@ class _GenerateKeys extends State<GenerateKeys> {
   final TextEditingController _privateKeyController = TextEditingController();
   final TextEditingController _publicKeyController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TutorialFlow tutorialFlow = TutorialFlow(nSteps: 4);
+  bool showTutorial = true;
 
   void saveKeys() async {
     if (_privateKeyController.text == "" ||
@@ -65,8 +73,11 @@ class _GenerateKeys extends State<GenerateKeys> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.fromLTRB(36, 20, 36, 0),
       child: Column(
@@ -128,13 +139,31 @@ class _GenerateKeys extends State<GenerateKeys> {
           const SizedBox(
             height: 15,
           ),
-          LabeledTextField(
-            controller: _nameController,
-            textStyle: Theme.of(context).textTheme.displayMedium,
-            labelText: "Identificador das chaves",
-            labelStyle: Theme.of(context).textTheme.displayMedium,
-            maxLines: 1,
-            contentPadding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+          AbsorbPointer(
+            absorbing: !tutorialFlow.tutorialSteps[1] && showTutorial,
+            child: TutorialStep(
+              boxHeight: 100,
+              boxWidth: MediaQuery.of(context).size.width,
+              padding: 8,
+              message: "Digite o nome que quer dar as chaves aqui",
+              highlight: tutorialFlow.tutorialSteps[1],
+              child: LabeledTextField(
+                onEditingComplete: () {
+                  if (showTutorial && tutorialFlow.actualStep == 1) {
+                    setState(() {
+                      
+                      tutorialFlow.nextStep();
+                    });
+                  }
+                },
+                controller: _nameController,
+                textStyle: Theme.of(context).textTheme.displayMedium,
+                labelText: "Identificador das chaves",
+                labelStyle: Theme.of(context).textTheme.displayMedium,
+                maxLines: 1,
+                contentPadding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+              ),
+            ),
           ),
           const SizedBox(
             height: 15,
@@ -142,24 +171,53 @@ class _GenerateKeys extends State<GenerateKeys> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ElevatedButton(
-                  style: Theme.of(context).elevatedButtonTheme.style,
-                  onPressed: () {
-                    var key = generateKeys();
-                    setState(() {
-                      _privateKeyController.text = key.toHex();
-                      _publicKeyController.text = key.publicKey.toHex();
-                    });
-                  },
-                  child: Text(
-                    "Gerar chaves",
-                    style: Theme.of(context).textTheme.labelLarge,
-                  )),
-              ElevatedButton(
+                AbsorbPointer(
+                  absorbing: !tutorialFlow.tutorialSteps[0] && showTutorial,
+                  child: TutorialStep(
+                    boxHeight: 60,
+                    boxWidth: 180,
+                    message: "Clique aqui para gerar suas chaves",
+                    highlight: tutorialFlow.tutorialSteps[0],
+                    child: ElevatedButton(
+                        style: Theme.of(context).elevatedButtonTheme.style,
+                        onPressed: () {
+                          var key = generateKeys();
+                          if (tutorialFlow.actualStep == 0) {
+                            tutorialFlow.nextStep();
+                          }
+                          setState(() {
+                            _privateKeyController.text = key.toHex();
+                            _publicKeyController.text = key.publicKey.toHex();
+                          });
+                          
+                        },
+                        child: Text(
+                          "Gerar chaves",
+                          style: Theme.of(context).textTheme.labelLarge,
+                        )),
+                  ),
+                ),
+              AbsorbPointer(
+                absorbing: !tutorialFlow.tutorialSteps[2] && showTutorial,
+                child: TutorialStep(
+                  boxHeight: 60,
+                  boxWidth: 200,
+                  message: "Clique aqui para guardar",
+                  highlight: tutorialFlow.tutorialSteps[2],
+                  child: ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style,
                   onPressed: () async {
+                    if (showTutorial) {
+                      showTutorial = false;
+
+                      setState(() {
+                        tutorialFlow.nextStep();
+                      });
+                      widget.changePageCallback(3);
+                    }
                     await DataBaseController().getTables();
                     saveKeys();
+                    
                     //await deleteDatabaseFile();
                     //print(await DataBaseController().getTables());
                   },
@@ -167,6 +225,8 @@ class _GenerateKeys extends State<GenerateKeys> {
                     "Guardar chaves",
                     style: Theme.of(context).textTheme.labelLarge,
                   )),
+                ),
+              ),
             ],
           ),
         ],

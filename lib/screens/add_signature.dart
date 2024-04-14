@@ -6,8 +6,8 @@ import 'package:crypto_id/data/utils.dart';
 import 'package:crypto_id/controllers/db_controller.dart';
 
 class AddSignature extends StatefulWidget {
-  const AddSignature({super.key});
-
+  final List<GlobalKey> keys;
+  const AddSignature({super.key, required this.keys});
   @override
   State<AddSignature> createState() => _AddSignature();
 }
@@ -49,6 +49,7 @@ class _AddSignature extends State<AddSignature> {
             children: [
               const Spacer(),
               ElevatedButton(
+                  key: widget.keys[0],
                   style: Theme.of(context).elevatedButtonTheme.style,
                   onPressed: () async {
                     var name = _namesController.text;

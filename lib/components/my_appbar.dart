@@ -1,5 +1,4 @@
 import 'package:crypto_id/components/screen_title.dart';
-import 'package:crypto_id/screens/tutorials/tutorial_page.dart';
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget {
@@ -19,7 +18,7 @@ class MyAppBar extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute<Widget>(
                       builder: (BuildContext context) {
-                    return const TutorialPage();
+                    return Placeholder();
                   }));
                 },
                 icon: const Icon(Icons.help))

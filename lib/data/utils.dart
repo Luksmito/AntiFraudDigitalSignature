@@ -5,7 +5,6 @@ void showMenuToPasteText(BuildContext context, TextEditingController controller,
     {int offset = 0}) {
   RenderBox box = context.findRenderObject() as RenderBox;
   Offset position = box.localToGlobal(Offset.zero);
-  print("px: ${position.dx}");
   // Exibe um menu de contexto perto do campo de texto
   showMenu(
       context: context,

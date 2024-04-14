@@ -2,6 +2,7 @@ import 'package:crypto_id/data/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/controllers/db_controller.dart';
 import './screens/home.dart';
+import 'package:flutter_myspot/flutter_myspot.dart';
 
 void setup() async {
   DataBaseController().initDb();
@@ -9,8 +10,10 @@ void setup() async {
   await DataBaseController().getTables();
 }
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   setup();
+  await SpotScenario.createState(["home"]); //option if you want to display only once
   runApp(const MyApp());
 }
 

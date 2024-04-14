@@ -21,6 +21,7 @@ dependencies:
   sqflite: ^2.3.2
   path_provider: ^2.0.2
   path:
+  flutter_myspot: ^1.0.1
   
 dev_dependencies:
   flutter_test:

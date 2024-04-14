@@ -1,4 +1,3 @@
-import 'package:crypto_id/screens/tutorials/tutorial_page.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/data/styles.dart';
@@ -14,16 +13,6 @@ int returnIcon(int actualIndex, int myIndex) {
   } else {
     return 0;
   }
-}
-
-class Home extends StatefulWidget {
-  const Home({super.key, required this.changeThemeCallback, required this.actualThemeMode});
-  
-  final Function(bool) changeThemeCallback;
-  final ThemeMode actualThemeMode;
-  
-  @override
-  State<Home> createState() => _Home();
 }
 
 class Bar extends StatelessWidget {
@@ -47,11 +36,20 @@ class Bar extends StatelessWidget {
         child: ScreenTitle(title: title));
   }
 }
+class Home extends StatefulWidget {
+  Home({super.key, required this.changeThemeCallback, required this.actualThemeMode});
+  final List<GlobalKey> tutorialKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
+  final Function(bool) changeThemeCallback;
+  final ThemeMode actualThemeMode;
+  
+  @override
+  State<Home> createState() => _Home();
+}
+
 
 class _Home extends State<Home> {
   
-  int _selectedIndex = 0;
-  bool showTutorial = true;
+  int _selectedIndex = 2;
 
   void changePage(int newIndex){
     setState(() {
@@ -75,21 +73,14 @@ class _Home extends State<Home> {
     });
   }
   
-  Widget showTutorialOrPages(List<Widget> widgetOptions) {
-    if (showTutorial) {
-      showTutorial = false;
-      return const TutorialPage();
-    } else {
-      return widgetOptions[_selectedIndex];
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
       SignaturesList(changePageCallback: changePage,),
-      const AddSignature(),
-      const GenerateKeys(),
+      AddSignature(keys: [widget.tutorialKeys[2]]),
+      GenerateKeys(changePageCallback: changePage,),
       const SignMessage(),
       Settings(changeThemeCallback: widget.changeThemeCallback, actualThemeMode: widget.actualThemeMode,),
     ];
@@ -97,7 +88,7 @@ class _Home extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
-      child: showTutorialOrPages(widgetOptions)
+      child: widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
