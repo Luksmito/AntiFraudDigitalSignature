@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:crypto_id/screens/generate_keys/generate_keys.dart';
 import 'package:crypto_id/screens/settings/settings.dart';
 import 'package:crypto_id/screens/sign_message/sign_message.dart';
-import 'package:crypto_id/screens/signatures_list.dart';
+import 'package:crypto_id/screens/signatures_list/signatures_list.dart';
 import 'package:crypto_id/screens/add_signature/add_signature.dart';
 
 class Home extends StatefulWidget {
