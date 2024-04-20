@@ -52,6 +52,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isFirstTime = prefs.getBool('first_time') ?? true;
+    isFirstTime = true;
     if (isFirstTime) {
       screen = TutorialScreen(onExitTutorial: onExitTutorial);
       prefs.setBool('first_time', false);

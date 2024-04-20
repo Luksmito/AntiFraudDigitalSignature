@@ -1,3 +1,4 @@
+import 'package:crypto_id/components/button_with_showcase.dart';
 import 'package:crypto_id/components/label_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/components/labeled_text_field.dart';
@@ -67,6 +68,14 @@ class _GenerateKeysPage extends State<GenerateKeysPage> {
     );
   }
 
+  void generateKeysAndShowOnTextField () {
+    var key = generateKeys();
+    setState(() {
+    _privateKeyController.text = key.toHex();
+    _publicKeyController.text = key.publicKey.toHex();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -123,39 +132,23 @@ class _GenerateKeysPage extends State<GenerateKeysPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Showcase(
-                    key: _one,
-                    description: "Clique aqui para gerar suas chaves",
-                    title: "Gerar chaves",
-                    child: ElevatedButton(
-                        style: Theme.of(context).elevatedButtonTheme.style,
-                        onPressed: () {
-                          var key = generateKeys();
-                          setState(() {
-                            _privateKeyController.text = key.toHex();
-                            _publicKeyController.text = key.publicKey.toHex();
-                          });
-                        },
-                        child: Text(
-                          "Gerar chaves",
-                          style: Theme.of(context).textTheme.labelLarge,
-                        )),
-                  ),
-                  Showcase(
-                    key: _three,
-                    description: "Clique aqui para guardar as chaves",
-                    title: "Salve suas chaves",
-                    child: ElevatedButton(
-                        style: Theme.of(context).elevatedButtonTheme.style,
-                        onPressed: () async {
-                          await DataBaseController().getTables();
-                          saveKeys();
-                        },
-                        child: Text(
-                          "Guardar chaves",
-                          style: Theme.of(context).textTheme.labelLarge,
-                        )),
-                  ),
+                  ButtonWithShowcase(
+                    showcaseKey: _one, 
+                    description: "Clique aqui para gerar suas chaves", 
+                    title: "Gerar chaves", 
+                    onPressed: generateKeysAndShowOnTextField, 
+                    buttonText: "Gerar chaves"
+                  ),  
+                  ButtonWithShowcase(
+                    showcaseKey: _three, 
+                    description: "Clique aqui para guardar as chaves", 
+                    title: "Salve suas chaves", 
+                    onPressed: () async {
+                      await DataBaseController().getTables();
+                      saveKeys();
+                    }, 
+                    buttonText: "Guardar chaves"
+                  )   
                 ],
               ),
             ],
@@ -163,8 +156,6 @@ class _GenerateKeysPage extends State<GenerateKeysPage> {
         );
   }
 }
-
-
 
 class GenerateKeys extends StatefulWidget {
   final Function(int) changePageCallback;

@@ -4,10 +4,9 @@ import 'package:crypto_id/screens/generate_keys/generate_keys.dart';
 import 'package:crypto_id/screens/settings/settings.dart';
 import 'package:crypto_id/screens/sign_message/sign_message.dart';
 import 'package:crypto_id/screens/signatures_list.dart';
-import 'package:crypto_id/screens/add_signature.dart';
+import 'package:crypto_id/screens/add_signature/add_signature.dart';
 
 class Home extends StatefulWidget {
-  final List<GlobalKey> tutorialKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
   final Function(bool) changeThemeCallback;
   final ThemeMode actualThemeMode;
   final bool showTutorial;
@@ -48,7 +47,7 @@ class _Home extends State<Home> {
       SignaturesList(
         changePageCallback: changePage,
       ),
-      AddSignature(keys: [widget.tutorialKeys[2]]),
+      AddSignature(),
       GenerateKeys(
           changePageCallback: changePage, showTutorial: widget.showTutorial),
       SignMessage(

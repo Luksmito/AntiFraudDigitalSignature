@@ -35,7 +35,7 @@ class _SignaturesListState extends State<SignaturesList>
       aux = await otherKeysHelper.getAllItems();
     } catch (e) {
       columnWidgets.clear();
-    columnWidgets.add(const ScreenTitle(title: "Assinaturas"));
+      columnWidgets.add(const ScreenTitle(title: "Assinaturas"));
       columnWidgets.add(
         TextButton(
           style: ButtonStyle(

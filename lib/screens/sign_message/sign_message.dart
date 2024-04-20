@@ -1,3 +1,4 @@
+import 'package:crypto_id/screens/sign_message/dropdown_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/controllers/my_keys_controller.dart';
@@ -16,7 +17,6 @@ class SignMessagePage extends StatefulWidget {
 }
 
 class _SignMessagePage extends State<SignMessagePage> {
-  var dropDownController = TextEditingController();
 
   String privateKeyText = "";
   String publicKeyText = "";
@@ -66,43 +66,9 @@ class _SignMessagePage extends State<SignMessagePage> {
                   case ConnectionState.waiting:
                   case ConnectionState.none:
                   default:
-                    return Row(
-                      children: [
-                        Expanded(
-                            child: DropdownMenu<MyKey>(
-                              initialSelection: null,
-                              label: Text(
-                                "Selecione uma chave",
-                                style:
-                                    Theme.of(context).textTheme.displayMedium,
-                              ),
-                              textStyle:
-                                  Theme.of(context).textTheme.displayMedium,
-                              controller: dropDownController,
-                              width: 301,
-                              enableFilter: false,
-                              enableSearch: false,
-                              requestFocusOnTap: true,
-                              onSelected: (MyKey? key) {
-                                keyChangeNotifier.setkeys(key!);
-                                setState(() {});
-                              },
-                              dropdownMenuEntries: keysRegistered
-                                  .map<DropdownMenuEntry<MyKey>>((MyKey key) {
-                                return DropdownMenuEntry<MyKey>(
-                                  value: key,
-                                  label: key.name,
-                                  style: MenuItemButton.styleFrom(
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium,
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        
-                      ],
+                    return DropDownMyKeys(
+                      keysRegistered: keysRegistered,
+                      keyChangeNotifier: keyChangeNotifier,
                     );
                 }
               }))),
