@@ -1,8 +1,9 @@
 import 'package:crypto_id/data/styles.dart';
+import 'package:crypto_id/screens/TutorialScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/controllers/db_controller.dart';
-import './screens/home.dart';
-import 'package:flutter_myspot/flutter_myspot.dart';
+import 'screens/home/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void setup() async {
   DataBaseController().initDb();
@@ -11,11 +12,11 @@ void setup() async {
 }
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   setup();
-  await SpotScenario.createState(["home"]); //option if you want to display only once
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -27,6 +28,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   var actualTheme = ThemeMode.light;
+  late bool isFirstTime;
+  late Widget screen;
 
   void changeTheme(bool value) {
     setState(() {
@@ -37,7 +40,32 @@ class _MyAppState extends State<MyApp> {
       }
       
     });
-    
+  }
+
+  void onExitTutorial() {
+    setState(() {
+      screen = Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme, showTutorial: isFirstTime,);
+      
+    });
+  }
+
+  Future<void> _checkFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isFirstTime = prefs.getBool('first_time') ?? true;
+    if (isFirstTime) {
+      screen = TutorialScreen(onExitTutorial: onExitTutorial);
+      prefs.setBool('first_time', false);
+    } else {
+      screen = Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme, showTutorial: isFirstTime,);
+    }
+    setState((){});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    screen = const Placeholder();
+    _checkFirstTime();
   }
 
   @override
@@ -46,7 +74,7 @@ class _MyAppState extends State<MyApp> {
       theme: themeLight(context),  
       darkTheme: themeDark(context),
       themeMode: actualTheme,
-      home: Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme,),
+      home: screen
     );
   }
 }
