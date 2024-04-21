@@ -6,14 +6,16 @@ O Identificador de Assinaturas é um aplicativo que utiliza o algoritmo ECDSA (E
 
 ## Funcionalidades
 Verificação de Identidade: Utiliza o algoritmo ECDSA para gerar e verificar assinaturas digitais, proporcionando uma maneira segura de confirmar a identidade de uma pessoa.
-Geração de Chaves Públicas e Privadas: Permite aos usuários gerar chaves pública e privada para uso na assinatura e verificação de identidades.
-Assinatura Digital: Oferece a capacidade de assinar digitalmente documentos e mensagens para garantir a autenticidade e integridade dos dados.
-Verificação de Assinaturas: Fornece uma função para verificar a autenticidade de assinaturas digitais, ajudando a garantir que as mensagens não tenham sido adulteradas ou falsificadas.
+1. Geração de Chaves Públicas e Privadas: Permite aos usuários gerar chaves pública e privada para uso na assinatura e verificação de identidades.
+2. Assinatura Digital: Oferece a capacidade de assinar digitalmente documentos e mensagens para garantir a autenticidade e integridade dos dados.
+2. Verificação de Assinaturas: Fornece uma função para verificar a autenticidade de assinaturas digitais, ajudando a garantir que as mensagens não tenham sido adulteradas ou falsificadas.
+
 ## Como Usar
-Gerar Chaves: Inicie o aplicativo e gere um par de chaves pública e privada.
-Assinar Documentos: Utilize sua chave privada para assinar digitalmente documentos ou mensagens.
-Verificar Identidade: Compartilhe sua chave pública com outras pessoas para que elas possam verificar sua identidade através da verificação das assinaturas digitais.
-Verificar Assinaturas: Utilize a chave pública de outra pessoa para verificar a autenticidade das assinaturas digitais que ela forneceu.
+1. Gerar Chaves: Inicie o aplicativo e gere um par de chaves pública e privada.
+2. Assinar Documentos: Utilize sua chave privada para assinar digitalmente documentos ou mensagens.
+3. Verificar Identidade: Compartilhe sua chave pública com outras pessoas para que elas possam verificar sua identidade através da verificação das assinaturas digitais.
+4. Verificar Assinaturas: Utilize a chave pública de outra pessoa para verificar a autenticidade das assinaturas digitais que ela forneceu.
+
 ## Instalação
 Clone o repositório para sua máquina local:
 ```
@@ -31,7 +33,5 @@ flutter pub get
 ```
 flutter run
 ```
-Contribuição
-Contribuições são bem-vindas! Se você encontrar um bug ou tiver alguma ideia de melhoria, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
 
