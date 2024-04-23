@@ -44,20 +44,19 @@ class _MyAppState extends State<MyApp> {
 
   void onExitTutorial() {
     setState(() {
-      screen = Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme, showTutorial: isFirstTime,);
-      
+      screen = Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme, showTutorialFirst: isFirstTime,);
     });
   }
 
   Future<void> _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isFirstTime = prefs.getBool('first_time') ?? true;
-    isFirstTime = true;
+    //prefs.setBool('first_time', true);
     if (isFirstTime) {
       screen = TutorialScreen(onExitTutorial: onExitTutorial);
       prefs.setBool('first_time', false);
     } else {
-      screen = Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme, showTutorial: isFirstTime,);
+      screen = Home(changeThemeCallback: changeTheme, actualThemeMode: actualTheme, showTutorialFirst: isFirstTime,);
     }
     setState((){});
   }

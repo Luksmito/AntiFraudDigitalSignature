@@ -9,12 +9,12 @@ import 'package:crypto_id/screens/add_signature/add_signature.dart';
 class Home extends StatefulWidget {
   final Function(bool) changeThemeCallback;
   final ThemeMode actualThemeMode;
-  final bool showTutorial;
+  final bool showTutorialFirst;
   Home(
       {super.key,
       required this.changeThemeCallback,
       required this.actualThemeMode,
-      required this.showTutorial});
+      required this.showTutorialFirst});
 
   @override
   State<Home> createState() => _Home();
@@ -22,6 +22,8 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   int _selectedIndex = 2;
+  int n_pages = 5;
+  List<bool> showTutorialFirst = List.generate(4, (index) => false);
 
   void changePage(int newIndex) {
     setState(() {
@@ -33,6 +35,7 @@ class _Home extends State<Home> {
   @override
   void initState() {
     super.initState();
+    showTutorialFirst = List.generate(4, (index) => widget.showTutorialFirst);
   }
 
   void selectIndex(int index) {
@@ -41,17 +44,30 @@ class _Home extends State<Home> {
     });
   }
 
+  void setShowTutorial() {
+    showTutorialFirst[_selectedIndex] = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<Widget> widgetOptions = <Widget>[
+    List<Widget> widgetOptions = <Widget>[
       SignaturesList(
+        isFirstTimeTutorial: showTutorialFirst[0],
+        setShowTutorialCallback: setShowTutorial,
         changePageCallback: changePage,
       ),
-      AddSignature(),
+      AddSignature(
+        isFirstTimeTutorial: showTutorialFirst[1],
+        setShowTutorialCallback: setShowTutorial,
+      ),
       GenerateKeys(
-          changePageCallback: changePage, showTutorial: widget.showTutorial),
+        isFirstTimeTutorial: showTutorialFirst[2],
+        setShowTutorialCallback: setShowTutorial,
+        changePageCallback: changePage,
+      ),
       SignMessage(
-        showTutorial: widget.showTutorial,
+        isFirstTimeTutorial: showTutorialFirst[3],
+        setShowTutorialCallback: setShowTutorial,
       ),
       Settings(
         changeThemeCallback: widget.changeThemeCallback,
