@@ -71,24 +71,27 @@ ThemeData themeLight(BuildContext context) {
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
             isDense: true,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(1)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-            constraints: const BoxConstraints(maxHeight: 32, minWidth: 301),
+            constraints: const BoxConstraints(maxHeight: 56, minWidth: 383),
             labelStyle: Theme.of(context).textTheme.displayMedium),
         menuStyle: MenuStyle(
+          fixedSize: MaterialStateProperty.all(const Size(343, 56)),
           shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
+
           style: ButtonStyle(
+              fixedSize: MaterialStateProperty.all(const Size(164,44)),
               textStyle: MaterialStateProperty.all(
                   Theme.of(context).textTheme.labelLarge),
               backgroundColor: MaterialStateProperty.all(
                   Theme.of(context).colorScheme.onBackground),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(20),
               )))));
 }
 
@@ -153,23 +156,27 @@ ThemeData themeDark(BuildContext context) {
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
             isDense: true,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(1)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-            constraints: const BoxConstraints(maxHeight: 32, minWidth: 301),
+            constraints: const BoxConstraints(maxHeight: 56, minWidth: 343),
             labelStyle: Theme.of(context).textTheme.displayMedium),
         menuStyle: MenuStyle(
+          backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+          fixedSize: MaterialStateProperty.all(const Size(343, 56)),
           shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(1))),
         ),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
+       elevatedButtonTheme: ElevatedButtonThemeData(
+
           style: ButtonStyle(
+              fixedSize: MaterialStateProperty.all(const Size(164,44)),
               textStyle: MaterialStateProperty.all(
                   Theme.of(context).textTheme.labelLarge),
               backgroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(255, 0x1f, 0x1f, 0x1f)),
+                  Theme.of(context).colorScheme.onBackground),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(20),
               )))));
 }

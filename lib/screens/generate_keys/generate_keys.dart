@@ -3,7 +3,6 @@ import 'package:crypto_id/components/label_with_icon.dart';
 import 'package:crypto_id/components/standard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/components/labeled_text_field.dart';
-import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/controllers/keys.dart';
 import 'package:crypto_id/controllers/my_keys_controller.dart';
 import 'package:crypto_id/data/utils.dart';
@@ -11,8 +10,11 @@ import 'package:crypto_id/controllers/db_controller.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class GenerateKeysPage extends StatefulWidget {
-  const GenerateKeysPage({super.key, required this.isFirstTimeTutorial});
-  
+  const GenerateKeysPage({
+    super.key,
+    required this.isFirstTimeTutorial,
+  });
+
   final bool isFirstTimeTutorial;
   @override
   State<GenerateKeysPage> createState() => _GenerateKeysPage();
@@ -82,8 +84,8 @@ class _GenerateKeysPage extends State<GenerateKeysPage> {
   void initState() {
     super.initState();
     if (widget.isFirstTimeTutorial) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
     }
   }
 
@@ -92,48 +94,54 @@ class _GenerateKeysPage extends State<GenerateKeysPage> {
     return StandardScreen(
       keys: [_one, _two, _three],
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(36, 20, 36, 0),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
           children: [
-            const ScreenTitle(title: "Gerar Chaves"),
-            LabelWIthIcon(
-                label: "Chave privada",
-                controllerToCopy: _privateKeyController),
-            LabeledTextField(
-              controller: _privateKeyController,
-              readOnly: true,
-              textStyle: Theme.of(context).textTheme.displayMedium,
-              labelText: "",
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            LabelWIthIcon(
-                controllerToCopy: _publicKeyController, label: "Chave pública"),
-            LabeledTextField(
-              controller: _publicKeyController,
-              readOnly: true,
-              textStyle: Theme.of(context).textTheme.displayMedium,
-              labelText: "",
-              maxLines: 7,
-              height: 77,
-              contentPadding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
             Showcase(
               key: _two,
               title: "Identificador para as chaves",
               description: "Digite um nome para identificar a chave",
               child: LabeledTextField(
+                height: 48,
                 controller: _nameController,
-                textStyle: Theme.of(context).textTheme.displayMedium,
+                textStyle: Theme.of(context).textTheme.displaySmall,
                 labelText: "Identificador das chaves",
                 labelStyle: Theme.of(context).textTheme.displayMedium,
                 maxLines: 1,
                 contentPadding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
               ),
+            ),
+            const SizedBox(
+              height:10,
+            ),
+            LabelWIthIcon(
+                label: "Chave privada",
+                controllerToCopy: _privateKeyController),
+            const SizedBox(
+              height: 5,
+            ),
+            LabeledTextField(
+                contentPadding: const EdgeInsets.all(6),
+                controller: _privateKeyController,
+                readOnly: true,
+                textStyle: Theme.of(context).textTheme.displaySmall,
+                labelText: "",
+                height: 64,
+                maxLines: 2,
+                ),
+            LabelWIthIcon(
+                controllerToCopy: _publicKeyController, label: "Chave pública"),
+            const SizedBox(
+              height: 5,
+            ),
+            LabeledTextField(
+              controller: _publicKeyController,
+              readOnly: true,
+              textStyle: Theme.of(context).textTheme.displaySmall,
+              labelText: "",
+              maxLines: 7,
+              height: 80,
+              contentPadding: const EdgeInsets.all(15),
             ),
             const SizedBox(
               height: 15,
@@ -155,7 +163,7 @@ class _GenerateKeysPage extends State<GenerateKeysPage> {
                       await DataBaseController().getTables();
                       saveKeys();
                     },
-                    buttonText: "Guardar chaves")
+                    buttonText: "Salvar chaves")
               ],
             ),
           ],
@@ -173,7 +181,7 @@ class GenerateKeys extends StatefulWidget {
     super.key,
     required this.changePageCallback,
     required this.isFirstTimeTutorial,
-    required this.setShowTutorialCallback
+    required this.setShowTutorialCallback,
   });
 
   @override
@@ -191,7 +199,9 @@ class _GenerateKeysState extends State<GenerateKeys> {
     return ShowCaseWidget(
         onFinish: goForNextPageTutorial,
         builder: Builder(builder: (context) {
-          return GenerateKeysPage(isFirstTimeTutorial: widget.isFirstTimeTutorial,);
+          return GenerateKeysPage(
+            isFirstTimeTutorial: widget.isFirstTimeTutorial,
+          );
         }));
   }
 }

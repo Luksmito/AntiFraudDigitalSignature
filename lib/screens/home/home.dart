@@ -1,3 +1,5 @@
+import 'package:crypto_id/components/rounded_question_button.dart';
+import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/screens/home/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/screens/generate_keys/generate_keys.dart';
@@ -24,11 +26,28 @@ class _Home extends State<Home> {
   int _selectedIndex = 2;
   int n_pages = 5;
   List<bool> showTutorialFirst = List.generate(4, (index) => false);
+  List<String> titles = [
+    "Assinaturas",
+    "Adicionar assinatura",
+    "Gerar chaves",
+    "Assinar mensagem"
+  ];
 
   void changePage(int newIndex) {
     setState(() {
       _selectedIndex = newIndex;
     });
+  }
+
+  void showSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Settings(
+                changeThemeCallback: widget.changeThemeCallback,
+                actualThemeMode: widget.actualThemeMode,
+              )),
+    );
   }
 
   //Lista de páginas de do aplicativos
@@ -69,15 +88,27 @@ class _Home extends State<Home> {
         isFirstTimeTutorial: showTutorialFirst[3],
         setShowTutorialCallback: setShowTutorial,
       ),
-      Settings(
-        changeThemeCallback: widget.changeThemeCallback,
-        actualThemeMode: widget.actualThemeMode,
-      ),
     ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SafeArea(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
+          title: ScreenTitle(
+            title: titles[_selectedIndex],
+          ),
+          actions: [
+            RoundedQuestionButton(
+              backgroundColor: Theme.of(context).colorScheme.onSecondary,
+              onPressed: showSettings,
+              icon: Icon(
+                Icons.settings, // Ícone de ponto de interrogação
+                size: 24, // Tamanho do ícone
+                color: Theme.of(context).colorScheme.primary, // Cor do ícone
+              ),
+            )
+          ]),
+      body: Container(
         child: widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomBar(

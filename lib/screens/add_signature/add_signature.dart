@@ -1,4 +1,3 @@
-import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/components/standard_screen.dart';
 import 'package:crypto_id/controllers/db_controller.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +7,14 @@ import 'package:crypto_id/data/utils.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class AddSignaturePage extends StatefulWidget {
-  const AddSignaturePage({super.key, required this.isFirstTimeTutorial});
-  
+  const AddSignaturePage(
+      {super.key,
+      required this.isFirstTimeTutorial,
+  });
+
   final bool isFirstTimeTutorial;
-  
+
+
   @override
   State<AddSignaturePage> createState() => _AddSignature();
 }
@@ -28,10 +31,11 @@ class _AddSignature extends State<AddSignaturePage> {
     String publicKey = _publicKeyController.text;
 
     if (name.isEmpty || publicKey.isEmpty) {
-      _showErrorDialog("Erro!", "Digite o nome e a chave pública que deseja adicionar");
+      _showErrorDialog(
+          "Erro!", "Digite o nome e a chave pública que deseja adicionar");
       return;
     }
-    
+
     await DataBaseController().getTables();
     var otherKey = {'name': name, 'publicKey': publicKey};
     var otherKeysHelper = OtherKeysHelper();
@@ -66,10 +70,9 @@ class _AddSignature extends State<AddSignaturePage> {
   void initState() {
     super.initState();
     if (widget.isFirstTimeTutorial) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
     }
-   
   }
 
   @override
@@ -77,19 +80,20 @@ class _AddSignature extends State<AddSignaturePage> {
     return StandardScreen(
       keys: [_one, _two, _three],
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(36, 20, 36, 0),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
           children: [
-            const ScreenTitle(title: "Adicionar assinatura",),
             Showcase(
               key: _one,
               title: "Identificador para a assinatura",
-              description: "Digite o nome da pessoa a que essa assinatura pertence",
+              description:
+                  "Digite o nome da pessoa a que essa assinatura pertence",
               targetPadding: const EdgeInsets.all(8),
               child: LabeledTextField(
                 controller: _namesController,
-                textStyle: Theme.of(context).textTheme.displayMedium,
+                textStyle: Theme.of(context).textTheme.displaySmall,
                 labelText: "Nome",
+                height: 48,
                 labelStyle: Theme.of(context).textTheme.displayMedium,
               ),
             ),
@@ -97,16 +101,18 @@ class _AddSignature extends State<AddSignaturePage> {
             Showcase(
               key: _two,
               title: "Chave pública",
-              description: "Coloque aqui a chave pública compartilhada com você",
+              description:
+                  "Coloque aqui a chave pública compartilhada com você",
               targetPadding: const EdgeInsets.all(8),
               child: LabeledTextField(
                 controller: _publicKeyController,
-                textStyle: Theme.of(context).textTheme.displayMedium,
+                textStyle: Theme.of(context).textTheme.displaySmall,
                 labelText: "Chave pública",
                 labelStyle: Theme.of(context).textTheme.displayMedium,
-                height: 100,
                 maxLines: 7,
-                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+                height: 80,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
               ),
             ),
             const SizedBox(height: 15),
@@ -121,7 +127,8 @@ class _AddSignature extends State<AddSignaturePage> {
                   child: ElevatedButton(
                     style: Theme.of(context).elevatedButtonTheme.style,
                     onPressed: _addSignature,
-                    child: Text("Adicionar", style: Theme.of(context).textTheme.labelLarge),
+                    child: Text("Adicionar",
+                        style: Theme.of(context).textTheme.labelLarge),
                   ),
                 ),
               ],
@@ -134,13 +141,12 @@ class _AddSignature extends State<AddSignaturePage> {
 }
 
 class AddSignature extends StatefulWidget {
-
   final bool isFirstTimeTutorial;
   final VoidCallback setShowTutorialCallback;
   const AddSignature(
       {super.key,
       required this.isFirstTimeTutorial,
-      required this.setShowTutorialCallback
+      required this.setShowTutorialCallback,
       });
 
   @override
@@ -148,13 +154,14 @@ class AddSignature extends StatefulWidget {
 }
 
 class _AddSignatureState extends State<AddSignature> {
-
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
         onFinish: widget.setShowTutorialCallback,
         builder: Builder(builder: (context) {
-          return  AddSignaturePage(isFirstTimeTutorial: widget.isFirstTimeTutorial);
+          return AddSignaturePage(
+              isFirstTimeTutorial: widget.isFirstTimeTutorial,
+              );
         }));
   }
 }

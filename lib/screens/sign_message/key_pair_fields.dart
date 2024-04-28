@@ -1,3 +1,4 @@
+import 'package:crypto_id/components/label_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_id/data/utils.dart';
 import 'package:crypto_id/components/labeled_text_field.dart';
@@ -57,44 +58,26 @@ class _KeyPairFieldsState extends State<KeyPairFields> {
                   icon: const Icon(Icons.copy)),
             ],
           ),
+          const SizedBox(height: 5,),
           LabeledTextField(
             obscureText: isPressedEye1,
             controller: privateKeyTextController,
+            contentPadding: const EdgeInsets.all(10),
             readOnly: true,
-            textStyle: Theme.of(context).textTheme.displayMedium,
+            textStyle: Theme.of(context).textTheme.displaySmall,
+             height: 64,
             labelText: "",
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Chave pública",
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-              const Spacer(),
-              IconButton(
-                  splashColor: Colors.transparent,
-                  constraints:
-                      const BoxConstraints.tightFor(width: 15, height: 15),
-                  color: Theme.of(context).colorScheme.primary,
-                  onPressed: () {
-                    copyText(publicKeyTextController.text, context);
-                  },
-                  icon: const Icon(Icons.copy, size: 20)),
-            ],
-          ),
+         LabelWIthIcon(controllerToCopy: publicKeyTextController, label: "Chave pública"),
+          const SizedBox(height: 5,),
           LabeledTextField(
             controller: publicKeyTextController,
             readOnly: true,
-            textStyle: Theme.of(context).textTheme.displayMedium,
+            textStyle: Theme.of(context).textTheme.displaySmall,
             labelText: "",
             maxLines: 7,
-            height: 77,
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            height: 80,
+            contentPadding: const EdgeInsets.all(20),
           ),
         ]);
   }

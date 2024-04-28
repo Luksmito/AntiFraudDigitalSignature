@@ -60,7 +60,8 @@ class LabeledTextField extends StatelessWidget {
                 labelText: innerText,
                 labelStyle: textStyle,
                 contentPadding: contentPadding,
-                border: const OutlineInputBorder()
+                border: const OutlineInputBorder(
+                )
               ),
             ),
         ),

@@ -12,12 +12,15 @@ class ScreenTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(children: [Text(title, style: Theme.of(context).textTheme.displayLarge,),],),
-        const SizedBox(height: 20,)
-      ]
+    return Container(
+      color: Theme.of(context).colorScheme.onSecondary,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [Text(title, style: Theme.of(context).textTheme.displayLarge,),],),
+          const SizedBox(height: 20,)
+        ]
+      ),
     );
   }
 

@@ -15,22 +15,26 @@ class LabelWIthIcon extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          _label,
-          style: Theme.of(context).textTheme.displayMedium,
-        ),
-        IconButton(
-            constraints:
-                const BoxConstraints.tightFor(width: 15, height: 15),
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () {
-              copyText(_controllerToCopy.text, context);
-            },
-            icon: const Icon(Icons.copy, size: 20))
-      ],
+    return Container(
+      constraints: const BoxConstraints.tightFor(height: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            _label,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          IconButton(
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+              constraints:
+                  const BoxConstraints.tightFor(width: 15, height: 15),
+              color: Theme.of(context).colorScheme.primary,
+              onPressed: () {
+                copyText(_controllerToCopy.text, context);
+              },
+              icon: const Icon(Icons.copy, size: 20))
+        ],
+      ),
     );
   }
 }

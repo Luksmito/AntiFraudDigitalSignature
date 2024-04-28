@@ -1,7 +1,6 @@
 import 'package:crypto_id/components/standard_screen.dart';
 import 'package:crypto_id/screens/sign_message/dropdown_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/controllers/my_keys_controller.dart';
 import 'package:crypto_id/screens/sign_message/message_pair.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +10,11 @@ import 'key_pair_fields.dart';
 import 'key_change_notifier.dart';
 
 class SignMessagePage extends StatefulWidget {
-  const SignMessagePage({super.key, required this.isFirstTimeTutorial});
+  const SignMessagePage(
+      {super.key,
+      required this.isFirstTimeTutorial,
+});
+
 
   final bool isFirstTimeTutorial;
 
@@ -20,7 +23,6 @@ class SignMessagePage extends StatefulWidget {
 }
 
 class _SignMessagePage extends State<SignMessagePage> {
-
   String privateKeyText = "";
   String publicKeyText = "";
 
@@ -43,9 +45,9 @@ class _SignMessagePage extends State<SignMessagePage> {
     super.initState();
     _initData();
     if (widget.isFirstTimeTutorial) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ShowCaseWidget.of(context).startShowCase([_one, _two,_three,_four,_five]));
-
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          ShowCaseWidget.of(context)
+              .startShowCase([_one, _two, _three, _four, _five]));
     }
   }
 
@@ -58,28 +60,27 @@ class _SignMessagePage extends State<SignMessagePage> {
     return StandardScreen(
       keys: [_one, _two, _three, _four, _five],
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(36, 20, 36, 0),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ScreenTitle(title: "Assinar mensagem"),
             Showcase(
-              key: _one,
-              description: "Selecione a chave que deseja usar aqui",
-              title: "Seletor de chave",
-              child: FutureBuilder(
-                future: _initData(),
-                builder: ((context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.none:
-                    default:
-                      return DropDownMyKeys(
-                        keysRegistered: keysRegistered,
-                        keyChangeNotifier: keyChangeNotifier,
-                      );
-                  }
-                }))),
+                key: _one,
+                description: "Selecione a chave que deseja usar aqui",
+                title: "Seletor de chave",
+                child: FutureBuilder(
+                    future: _initData(),
+                    builder: ((context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                        default:
+                          return DropDownMyKeys(
+                            keysRegistered: keysRegistered,
+                            keyChangeNotifier: keyChangeNotifier,
+                          );
+                      }
+                    }))),
             ListenableBuilder(
                 listenable: keyChangeNotifier,
                 builder: (context, child) {
@@ -114,20 +115,20 @@ class _SignMessagePage extends State<SignMessagePage> {
 }
 
 class SignMessage extends StatefulWidget {
-  const SignMessage({super.key, required this.isFirstTimeTutorial, required this.setShowTutorialCallback});
+  const SignMessage(
+      {super.key,
+      required this.isFirstTimeTutorial,
+      required this.setShowTutorialCallback,
+      });
 
-  
   final VoidCallback setShowTutorialCallback;
   final bool isFirstTimeTutorial;
   @override
   State<SignMessage> createState() => _SignMessageState();
 }
 
-
-
 class _SignMessageState extends State<SignMessage> {
-
-  void disableTutorial () async {
+  void disableTutorial() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('first_time', false);
     widget.setShowTutorialCallback();
@@ -136,9 +137,11 @@ class _SignMessageState extends State<SignMessage> {
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
-      onFinish: disableTutorial,
-      builder: Builder(builder: (context) {
-      return SignMessagePage(isFirstTimeTutorial: widget.isFirstTimeTutorial);
-    }));
+        onFinish: disableTutorial,
+        builder: Builder(builder: (context) {
+          return SignMessagePage(
+              isFirstTimeTutorial: widget.isFirstTimeTutorial,
+              );
+        }));
   }
 }

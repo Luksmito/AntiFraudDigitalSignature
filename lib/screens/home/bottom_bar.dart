@@ -20,7 +20,6 @@ class BottomBar extends StatelessWidget {
     [Icon(Icons.add_box_outlined), Icon(Icons.add_box)],
     [Icon(Icons.vpn_key_outlined), Icon(Icons.vpn_key)],
     [Icon(Icons.edit_outlined), Icon(Icons.edit)],
-    [Icon(Icons.settings_outlined), Icon(Icons.settings)]
   ];
   
   @override
@@ -44,11 +43,6 @@ class BottomBar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: icones[3][returnIcon(selectedIndex, 3)],
-            label: '',
-            backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: icones[4][returnIcon(selectedIndex, 4)],
             label: '',
             backgroundColor: primaryColor,
           ),

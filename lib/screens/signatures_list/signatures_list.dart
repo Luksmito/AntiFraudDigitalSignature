@@ -1,16 +1,19 @@
 import 'package:crypto_id/components/standard_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_id/components/screen_title.dart';
 import 'package:crypto_id/controllers/other_keys_controller.dart';
 import 'package:showcaseview/showcaseview.dart';
 import '../../components/sign_list_item.dart';
 import '../../data/styles.dart';
 
 class SignaturesListPage extends StatefulWidget {
-  const SignaturesListPage({super.key, required this.changePageCallback, required this.isFirstTimeTutorial});
+  const SignaturesListPage(
+      {super.key,
+      required this.changePageCallback,
+      required this.isFirstTimeTutorial,
+
+      });
   final bool isFirstTimeTutorial;
   final Function(int) changePageCallback;
-
   @override
   State<SignaturesListPage> createState() => _SignaturesListPageState();
 }
@@ -42,7 +45,6 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
 
   void _buildErrorUI() {
     columnWidgets = [
-      const ScreenTitle(title: "Assinaturas"),
       _buildAddButton(),
       const SizedBox(height: 15),
     ];
@@ -50,7 +52,6 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
 
   void _buildSignaturesList(List<Map<String, dynamic>> aux) {
     columnWidgets = [
-      const ScreenTitle(title: "Assinaturas"),
       _buildAddButton(),
       const SizedBox(height: 15),
     ];
@@ -68,32 +69,39 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
     return Showcase(
       key: _two,
       title: "Adicionar assinaturas",
-      description: "Clique aqui para ser redirecionado para a tela de adicionar assinaturas",
-      child: TextButton(
-        style: ButtonStyle(
-          fixedSize: const MaterialStatePropertyAll(Size(257, 32)),
-          padding:
-              MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
-          foregroundColor: MaterialStateProperty.all<Color>(
-              Theme.of(context).colorScheme.primary),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-              side: BorderSide(color: Theme.of(context).colorScheme.primary),
+      description:
+          "Clique aqui para ser redirecionado para a tela de adicionar assinaturas",
+      child: Row(
+        children: [
+          const Spacer(),
+          TextButton(
+            style: ButtonStyle(
+              fixedSize: const MaterialStatePropertyAll(Size(257, 32)),
+              padding:
+                  MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
+              foregroundColor: MaterialStateProperty.all<Color>(
+                  Theme.of(context).colorScheme.primary),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                ),
+              ),
+            ),
+            onPressed: () {
+              widget.changePageCallback(1);
+            },
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.add),
+                SizedBox(width: 8),
+                Text('Adicionar assinatura', style: TextStyle(fontSize: 16)),
+              ],
             ),
           ),
-        ),
-        onPressed: () {
-          widget.changePageCallback(1);
-        },
-        child: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.add),
-            SizedBox(width: 8),
-            Text('Adicionar assinatura', style: TextStyle(fontSize: 16)),
-          ],
-        ),
+          const Spacer()
+        ],
       ),
     );
   }
@@ -104,7 +112,7 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
     _future = getOtherKeys();
     if (widget.isFirstTimeTutorial) {
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two]));
+          (_) => ShowCaseWidget.of(context).startShowCase([_one, _two]));
     }
   }
 
@@ -113,7 +121,7 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
     return StandardScreen(
       keys: [_one, _two],
       child: Showcase(
-        targetPadding: EdgeInsets.only(bottom: 100),
+        targetPadding: const EdgeInsets.only(bottom: 100),
         key: _one,
         title: "Assinaturas cadastradas",
         description:
@@ -127,7 +135,7 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
                 case ConnectionState.waiting:
                   return _buildLoadingUI();
                 default:
-                  return Column(children: columnWidgets);
+                  return Column(crossAxisAlignment:CrossAxisAlignment.center,children: columnWidgets);
               }
             }),
           ),
@@ -138,8 +146,8 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
 
   Widget _buildLoadingUI() {
     return Column(
+      crossAxisAlignment:CrossAxisAlignment.center,
       children: [
-        const ScreenTitle(title: "Assinaturas"),
         _buildAddButton(),
         const SizedBox(height: 300),
         const Center(
@@ -153,31 +161,32 @@ class _SignaturesListPageState extends State<SignaturesListPage> {
   }
 }
 
-
 class SignaturesList extends StatefulWidget {
   final Function(int) changePageCallback;
   final bool isFirstTimeTutorial;
   final VoidCallback setShowTutorialCallback;
 
-  const SignaturesList({
-    super.key,
-    required this.changePageCallback,
-    required this.isFirstTimeTutorial,
-    required this.setShowTutorialCallback
-  });
+
+  const SignaturesList(
+      {super.key,
+      required this.changePageCallback,
+      required this.isFirstTimeTutorial,
+      required this.setShowTutorialCallback,});
 
   @override
   State<SignaturesList> createState() => _SignaturesListState();
 }
 
 class _SignaturesListState extends State<SignaturesList> {
-
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
         onFinish: widget.setShowTutorialCallback,
         builder: Builder(builder: (context) {
-          return SignaturesListPage(changePageCallback: widget.changePageCallback, isFirstTimeTutorial: widget.isFirstTimeTutorial,);
+          return SignaturesListPage(
+            changePageCallback: widget.changePageCallback,
+            isFirstTimeTutorial: widget.isFirstTimeTutorial,
+          );
         }));
   }
 }

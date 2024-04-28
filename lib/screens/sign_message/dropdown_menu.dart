@@ -33,7 +33,7 @@ class _DropDownMyKeysState extends State<DropDownMyKeys> {
             ),
             textStyle: Theme.of(context).textTheme.displayMedium,
             controller: dropDownController,
-            width: 301,
+            width: MediaQuery.of(context).size.width-40,
             enableFilter: false,
             enableSearch: false,
             requestFocusOnTap: true,
