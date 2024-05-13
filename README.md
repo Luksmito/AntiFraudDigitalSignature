@@ -29,6 +29,13 @@ cd AntiFraudDigitalSignature
 ```
 flutter pub get
 ```
+
+<img src="/imgsGit/CryptoID (1).jpeg">
+<img src="/imgsGit/CryptoID (1).jpeg">
+<img src="/imgsGit/CryptoID (1).jpeg">
+<img src="/imgsGit/CryptoID (1).jpeg">
+<img src="/imgsGit/CryptoID (1).jpeg">
+
 ### Execute o aplicativo no seu dispositivo ou emulador:
 ```
 flutter run
