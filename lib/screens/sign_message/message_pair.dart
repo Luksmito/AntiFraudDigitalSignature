@@ -1,3 +1,4 @@
+import 'package:crypto_id/screens/sign_message/animated_dialog.dart';
 import 'package:elliptic/elliptic.dart';
 
 import 'package:flutter/material.dart';
@@ -53,53 +54,7 @@ class _MessagePairState extends State<MessagePair> {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          insetPadding: const EdgeInsets.all(10),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Mensagem Assinada com sucesso!", style: Theme.of(context).textTheme.displayMedium,),
-                const SizedBox(height: 20,),
-                Center(
-                  child: Text(
-                    "Copie o código abaixo para verificar sua assinatura.",
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ),
-                const SizedBox(height: 20,),
-                LabeledTextField(
-                  controller: signedMessageController,
-                  readOnly: true,
-                  textStyle: Theme.of(context).textTheme.displaySmall,
-                  labelText: "",
-                  maxLines: 7,
-                  height: 77,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                ),
-                const SizedBox(height: 20,),
-                ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    copyText(signedMessageController.text, context);
-                  });
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(251, 44),
-                ),
-                child: Text(
-                  "Copiar o código",
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-              ),
-              ],
-            ),
-          ),
-        );
+        return AnimatedDialog(signedMessageController: signedMessageController);
       },
     );
   }
